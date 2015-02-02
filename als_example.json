@@ -1,0 +1,46 @@
+{
+  "test_dataset": {
+    "file" : {
+      "path" : "testdata\\ALS_L2_20140324T120912_125047.als",
+      "range" : [46062, 46092]
+    },
+    "dem" : {
+      "resolution" : 1.0,
+      "align_heading": true,
+      "griddata" : {
+        "method" : "linear",
+        "rescale" : true
+      },
+      "use_maximum_filter" : true,
+      "maximum_filter" : {
+        "size" : 3,
+        "mode" : "nearest"
+      }
+    },
+    "map" : {
+      "use_hillshade" : true,
+      "hillshade" : {
+        "scale" : 0.1,
+        "azdeg" : 165.0,
+        "altdeg" : 40.0
+      },
+      "colormap" : {
+        "range" : "fixed",
+        "vmin" : 0.0,
+        "vmax" : 1.5,
+        "nice_numbers" : false,
+        "name" : "premiver2"
+      },
+      "label" : {
+        "campaign" : "SMOSice2014",
+        "xaxis" : "Meter",
+        "yaxis" : "Meter",
+        "zaxis" : "WGS84 Elevation (m)"
+      }
+    },
+    "resample" : {
+        "domain" : "time",
+        "interval" : 1.0
+    }
+  }
+}
