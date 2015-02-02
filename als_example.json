@@ -1,7 +1,7 @@
 {
   "test_dataset": {
     "file" : {
-      "path" : "testdata\\ALS_L2_20140324T120912_125047.als",
+      "path" : "testdata\\ALS_L2_20140324T124742_124812.als",
       "range" : [46062, 46092]
     },
     "dem" : {
