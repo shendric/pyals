@@ -83,8 +83,10 @@ class AirborneLaserScannerFile(object):
         with open(self.filename, 'rb') as f:
             # Read header size
             self.header.byte_size = struct.unpack('>b', f.read(1))[0]
+            logging.info("als_header.byte_size: %s" %
+                         str(self.header.byte_size))
             if self.header.byte_size == 36:
-                header_dict['data_points_per_line'] = [1, '>b']
+                header_dict['data_points_per_line'] = [1, '>B']
             elif self.header.byte_size == 37:
                 header_dict['data_points_per_line'] = [2, '>H']
             else:
@@ -363,7 +365,7 @@ class AlsDEM(object):
         cbi = np.median(np.arange(len(self.x[0, :])))
         vec1 = [self.x[0, cbi], self.y[0, cbi],  0.0]
         vec2 = [self.x[-1, cbi], self.y[-1, cbi], 0.0]
-        angle = -1.0*np.arcsin((vec2[1]-vec1[1])/(vec2[0]-vec1[0]))
+        angle = -1.0*np.arctan((vec2[1]-vec1[1])/(vec2[0]-vec1[0]))
         # Get center point
         xc = np.nanmean(self.x)
         yc = np.nanmean(self.y)
