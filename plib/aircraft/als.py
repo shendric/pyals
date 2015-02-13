@@ -444,7 +444,7 @@ class AlsDemMap(object):
         figManager = plt.get_current_fig_manager()
         figManager.window.showMaximized()
         plt.show()
-        plt.clear(self.fig)
+        plt.close(self.fig)
 
     def save_fig(self, filename, dpi=300):
         import seaborn as sns
