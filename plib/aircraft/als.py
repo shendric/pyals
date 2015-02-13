@@ -5,7 +5,7 @@ from plib.mpl.vacumm_color import cmap_previmer2
 
 # Projection
 from pyproj import Proj
-import utm
+# import utm
 
 # Numpy & Scipy
 import numpy as np
@@ -235,7 +235,7 @@ class AlsDEM(object):
     """ TODO: Documentation """
 
     MAXIMUM_FILTER_DEFAULT = {'size': 3, 'mode': 'nearest'}
-    GRIDDATA_DEFAULT = {'method': 'linear', 'rescale': True}
+    GRIDDATA_DEFAULT = {'method': 'linear', 'rescale': False}
 
     def __init__(self, **kwargs):
         """ TODO: Documentation """
@@ -275,19 +275,22 @@ class AlsDEM(object):
     def griddata(self, method=None, rescale=None):
         """ Grids irregular laser scanner points to regular grid """
         # TODO: Properly validate data
-        self._proj_to_utm()
+        self._proj()
         if self._align_heading:
             self._align()
         self._griddata()
         if self._use_maximum_filter:
             self._maximum_filter()
 
-    def _proj_to_utm(self):
+    def _proj(self):
         """ Calculate projection coordinates """
         # TODO: UTM will fail far up north
-        _, _, zone, letter = utm.from_latlon(np.nanmean(self.latitude),
-                                             np.nanmean(self.longitude))
-        p = Proj(proj='utm', zone=zone, ellps='WGS84')
+#        _, _, zone, letter = utm.from_latlon(np.nanmean(self.latitude),
+#                                             np.nanmean(self.longitude))
+        # p = Proj(proj='utm', zone=zone, ellps='WGS84')
+        lat_0ts = np.nanmedian(self.latitude)
+        lon_0 = np.nanmedian(self.longitude)
+        p = Proj(proj='stere', lat_ts=lat_0ts, lat_0=lat_0ts, lon_0=lon_0)
         self.x, self.y = p(self.longitude, self.latitude)
         nan_mask = np.where(np.logical_or(np.isnan(self.longitude),
                                           np.isnan(self.latitude)))
@@ -344,7 +347,7 @@ class AlsDEM(object):
                                              bins=[xedges, yedges])
         self.rzhist = self.rzhist.transpose()
         data_mask = self.rzhist > 0.0
-        
+
         data_mask = maximum_filter(data_mask, **self._maximum_filter_kwargs)
 
 #        structure = [[0,1,0],
@@ -367,8 +370,8 @@ class AlsDEM(object):
         vec2 = [self.x[-1, cbi], self.y[-1, cbi], 0.0]
         angle = -1.0*np.arctan((vec2[1]-vec1[1])/(vec2[0]-vec1[0]))
         # Get center point
-        xc = np.nanmean(self.x)
-        yc = np.nanmean(self.y)
+        xc = np.nanmedian(self.x)
+        yc = np.nanmedian(self.y)
         # Reform points
         points = [self.x.flatten()-xc, self.y.flatten()-yc]
         # Execute the rotation
