@@ -24,15 +24,13 @@ def test_plot_alsdata():
     dem.set_data(als)
     dem.set_resolution(config.dem.resolution)
     dem.set_align_heading(config.dem.align_heading)
-    dem.set_maximum_filter(config.dem.use_maximum_filter,
-                           **config.dem.maximum_filter)
+    dem.set_maximum_filter(config.dem.use_maximum_filter,  **config.dem.maximum_filter)
     dem.griddata()
 
     # Plot the DEM
     fig = AlsDemMap()
     fig.set_dem(dem)
-    fig.set_hillshade(config.map.use_hillshade,
-                      **config.map.hillshade)
+    fig.set_hillshade(config.map.use_hillshade, **config.map.hillshade)
     fig.set_cmap(**config.map.colormap)
     fig.set_label(**config.map.label)
     fig.quickview()
