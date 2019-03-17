@@ -365,7 +365,7 @@ class AlsDEM(object):
         """
         # Get angle of direction (cbi: center beam index)
         shape = np.shape(self.x)
-        cbi = np.median(np.arange(len(self.x[0, :])))
+        cbi = np.median(np.arange(len(self.x[0, :]))).astype(int)
         vec1 = [self.x[0, cbi], self.y[0, cbi],  0.0]
         vec2 = [self.x[-1, cbi], self.y[-1, cbi], 0.0]
         angle = -1.0*np.arctan((vec2[1]-vec1[1])/(vec2[0]-vec1[0]))
